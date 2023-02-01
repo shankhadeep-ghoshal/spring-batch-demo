@@ -2,10 +2,14 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.diffplug.spotless' version '5.17.0'
+    id 'idea' // in case you use Intelli-J IDEA if you don't then my condolences
 }
 
+apply from: "${rootDir}/gradle/static-code-analysis.gradle"
+
 group = 'com.shankhadeepghoshal'
-version = '0.0.1-SNAPSHOT'
+version = '1'
 sourceCompatibility = '17'
 
 configurations {
@@ -14,20 +18,35 @@ configurations {
     }
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation("org.springframework.boot:spring-boot-starter-batch",
+            "org.springframework.boot:spring-boot-starter-data-jdbc",
+            "org.springframework.boot:spring-boot-starter-web")
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
+
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.batch:spring-batch-test'
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test",
+            "org.springframework.batch:spring-batch-test")
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = false // disable plain jar generation
 }
