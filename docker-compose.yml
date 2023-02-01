@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  mysqldb:
+    image: mysql
+    restart: on-failure
+    networks:
+      - central
+    ports:
+      - "3366:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: people
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-proot" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "9085:8080"
+
+  batch-service:
+    networks:
+      - central
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+
+networks:
+  central:
+    driver: bridge
