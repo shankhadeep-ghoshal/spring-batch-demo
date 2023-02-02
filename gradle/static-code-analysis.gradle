@@ -25,6 +25,7 @@ buildscript {
             importOrder('java', 'javax', 'com.shankhadeepghoshal.springbatch', '')
             removeUnusedImports()
             trimTrailingWhitespace()
+            indentWithTabs(1)
             endWithNewline()
             googleJavaFormat('1.11.0')
                     .aosp()
