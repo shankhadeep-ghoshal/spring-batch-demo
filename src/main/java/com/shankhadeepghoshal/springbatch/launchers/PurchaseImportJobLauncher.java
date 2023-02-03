@@ -1,6 +1,6 @@
 package com.shankhadeepghoshal.springbatch.launchers;
 
-import com.shankhadeepghoshal.springbatch.annotations.ApiImport;
+import com.shankhadeepghoshal.springbatch.annotations.PurchaseImport;
 import java.util.concurrent.TimeUnit;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +21,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
-public class ApiImportJobLauncher {
-
+public class PurchaseImportJobLauncher {
     JobLauncher launcher;
-    @ApiImport Job apiImportJob;
+    @PurchaseImport Job purchaseImportJob;
 
     @SneakyThrows
     @Scheduled(fixedRate = 5L, timeUnit = TimeUnit.SECONDS)
@@ -34,7 +33,7 @@ public class ApiImportJobLauncher {
                         .addLong("time", System.currentTimeMillis())
                         .toJobParameters();
 
-        log.info("Executing Job....");
-        launcher.run(apiImportJob, jobParameters);
+        log.info("Executing Purchase Job....");
+        launcher.run(purchaseImportJob, jobParameters);
     }
 }

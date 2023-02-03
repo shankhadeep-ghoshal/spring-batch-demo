@@ -19,6 +19,6 @@ public class ExceptionSkipPolicy implements SkipPolicy {
         log.error("Error occurred while job execution", throwable);
 
         return throwable instanceof IllegalArgumentException
-                || throwable instanceof ApiReadException;
+                || throwable instanceof PersonImportException;
     }
 }

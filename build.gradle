@@ -45,10 +45,12 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test",
             "org.springframework.batch:spring-batch-test")
+    testRuntimeOnly("com.h2database:h2:$h2Version") // CVE-2022-45868
 }
 
 test {
     useJUnitPlatform()
+    jvmArgs = ["-Dspring.profiles.active=test"]
 }
 
 jar {

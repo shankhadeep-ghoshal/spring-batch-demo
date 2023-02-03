@@ -1,5 +1,6 @@
 package com.shankhadeepghoshal.springbatch.jobcompletionlisteners;
 
+import com.shankhadeepghoshal.springbatch.annotations.PersonImport;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
-public class ApiJobCompleteNotificationListener implements JobExecutionListener {
+@PersonImport
+public class PersonImportJobCompleteNotificationListener implements JobExecutionListener {
     public static final String SELECT_QUERY = """
 											SELECT COUNT(*) FROM person
 							""";

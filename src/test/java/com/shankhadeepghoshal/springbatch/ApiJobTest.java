@@ -6,7 +6,9 @@ import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * @author <a href="mailto:shankhadeepghoshal1996@gmail.com">Shankhadeep Ghoshal</a>
@@ -14,8 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest
 @SpringBatchTest
+@AutoConfigureTestDatabase
+@DirtiesContext
 class ApiJobTest {
-
     @Autowired private transient JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
@@ -27,6 +30,6 @@ class ApiJobTest {
                 () -> Assertions.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus()),
                 () -> Assertions.assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus()),
                 () -> Assertions.assertEquals(10, stepExecution.getReadCount()),
-                () -> Assertions.assertEquals(0, stepExecution.getWriteCount()));
+                () -> Assertions.assertEquals(10, stepExecution.getWriteCount()));
     }
 }

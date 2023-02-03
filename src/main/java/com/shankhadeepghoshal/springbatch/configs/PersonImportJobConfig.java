@@ -1,11 +1,11 @@
 package com.shankhadeepghoshal.springbatch.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shankhadeepghoshal.springbatch.annotations.ApiImport;
+import com.shankhadeepghoshal.springbatch.annotations.PersonImport;
 import com.shankhadeepghoshal.springbatch.exceptions.ExceptionSkipPolicy;
-import com.shankhadeepghoshal.springbatch.jobcompletionlisteners.ApiJobCompleteNotificationListener;
+import com.shankhadeepghoshal.springbatch.jobcompletionlisteners.PersonImportJobCompleteNotificationListener;
 import com.shankhadeepghoshal.springbatch.pojos.Person;
-import com.shankhadeepghoshal.springbatch.processors.ApiProcessor;
+import com.shankhadeepghoshal.springbatch.processors.PersonProcessor;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,7 +36,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @since 1.0
  */
 @Configuration
-public class ApiJobConfig {
+public class PersonImportJobConfig {
 
     private static final int JOB_CHUNK_SIZE = 10;
     private static final String SQL_STRING =
@@ -54,16 +54,16 @@ public class ApiJobConfig {
     }
 
     @Bean
-    @ApiImport
-    public JsonItemReader<Person> apiReader(
+    @PersonImport
+    public JsonItemReader<Person> personReader(
             @Value("${job.api.url}") final String url,
             final JacksonJsonObjectReader<Person> objectReader) {
-        return readJsonIntoTempStorage(url, objectReader);
+        return readPersonFromRestAndDumpToFile(url, objectReader);
     }
 
     @Bean
-    @ApiImport
-    public JdbcBatchItemWriter<Person> apiWriter(final DataSource dataSource) {
+    @PersonImport
+    public JdbcBatchItemWriter<Person> personWriter(final DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<Person>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
                 .sql(SQL_STRING)
@@ -72,16 +72,16 @@ public class ApiJobConfig {
     }
 
     @Bean
-    @ApiImport
-    public Step apiStep1(
+    @PersonImport
+    public Step personStep1(
             final JobRepository jobRepository,
             final PlatformTransactionManager txManager,
-            @ApiImport final JdbcBatchItemWriter<Person> itemWriter,
-            final JsonItemReader<Person> itemReader,
-            final ApiProcessor itemProcessor,
-            @ApiImport final ApiImportStepSkipListener stepSkipListener,
+            @PersonImport final JdbcBatchItemWriter<Person> itemWriter,
+            @PersonImport final JsonItemReader<Person> itemReader,
+            @PersonImport final PersonProcessor itemProcessor,
+            @PersonImport final PersonImportStepSkipListener stepSkipListener,
             final ExceptionSkipPolicy skipPolicy,
-            @Value("${job.api.step.first}") final String stepName) {
+            @Value("${job.person.step.first}") final String stepName) {
         return new StepBuilder(stepName, jobRepository)
                 .<Person, Person>chunk(JOB_CHUNK_SIZE, txManager)
                 .reader(itemReader)
@@ -94,12 +94,13 @@ public class ApiJobConfig {
     }
 
     @Bean
-    @ApiImport
-    public Job apiImportJob(
+    @PersonImport
+    public Job personImportJob(
             final JobRepository jobRepository,
-            final ApiJobCompleteNotificationListener completeNotificationListener,
-            @ApiImport final Step apiStep1,
-            @Value("${job.api}") final String jobName) {
+            @PersonImport
+                    final PersonImportJobCompleteNotificationListener completeNotificationListener,
+            @PersonImport final Step apiStep1,
+            @Value("${job.person}") final String jobName) {
         return new JobBuilder(jobName, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(completeNotificationListener)
@@ -109,7 +110,7 @@ public class ApiJobConfig {
     }
 
     @SneakyThrows
-    private static JsonItemReader<Person> readJsonIntoTempStorage(
+    private static JsonItemReader<Person> readPersonFromRestAndDumpToFile(
             final String url, final JacksonJsonObjectReader<Person> personObjectReader) {
         try (var iStream = new URL(url).openConnection().getInputStream()) {
             final var tmpDir = Paths.get(new ClassPathResource("data.json").getURI());
