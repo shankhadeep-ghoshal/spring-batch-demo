@@ -1,4 +1,4 @@
-package com.shankhadeepghoshal.springbatch.exceptions;
+package com.shankhadeepghoshal.springbatch.personimport;
 
 /**
  * @author <a href="mailto:shankhadeepghoshal1996@gmail.com">Shankhadeep Ghoshal</a>
@@ -6,7 +6,7 @@ package com.shankhadeepghoshal.springbatch.exceptions;
  */
 public class PersonImportException extends RuntimeException { // NOPMD
 
-    public PersonImportException(Throwable exception) {
-        super(exception);
-    }
+  public PersonImportException(Throwable exception) {
+    super(exception);
+  }
 }

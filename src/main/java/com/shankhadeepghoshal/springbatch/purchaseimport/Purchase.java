@@ -1,4 +1,4 @@
-package com.shankhadeepghoshal.springbatch.pojos;
+package com.shankhadeepghoshal.springbatch.purchaseimport;
 
 import java.time.LocalDate;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Purchase {
-    Integer custId;
-    Double amount;
-    LocalDate buyDate;
+  Integer custId;
+  Double amount;
+  LocalDate buyDate;
 }

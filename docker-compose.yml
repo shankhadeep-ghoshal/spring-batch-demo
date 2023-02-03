@@ -12,28 +12,38 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: people
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-proot" ]
+      test: ["CMD","mysql","-h","localhost","-P","3306","-u","root","--password=root","-e","select 1","people"]
       interval: 5s
       timeout: 5s
       retries: 10
 
-#  batch-service:
-#    networks:
-#      - central
-#    depends_on:
-#      mysqldb:
-#        condition: service_healthy
-#    deploy:
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8081:8080"
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass root
+    networks:
+      - central
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+
+  batch-service:
+    networks:
+      - central
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8080"
 
 networks:
   central:
-    driver: bridge

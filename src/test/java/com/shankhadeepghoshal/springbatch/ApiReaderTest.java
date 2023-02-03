@@ -1,6 +1,6 @@
 package com.shankhadeepghoshal.springbatch;
 
-import com.shankhadeepghoshal.springbatch.pojos.Person;
+import com.shankhadeepghoshal.springbatch.personimport.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
@@ -14,17 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest
 class ApiReaderTest {
-    @Autowired private transient JsonItemReader<Person> reader;
+  @Autowired private transient JsonItemReader<Person> reader;
 
-    @Test
-    void testJsonReader() throws Exception {
-        reader.open(new ExecutionContext());
+  @Test
+  void testJsonReader() throws Exception {
+    reader.open(new ExecutionContext());
 
-        Person person;
-        int id = 1;
-        while ((person = reader.read()) != null) { // NOPMD
-            Assertions.assertEquals(id, person.id());
-            id++;
-        }
+    Person person;
+    int id = 1;
+    while ((person = reader.read()) != null) { // NOPMD
+      Assertions.assertEquals(id, person.id());
+      id++;
     }
+  }
 }

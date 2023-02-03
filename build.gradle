@@ -31,12 +31,17 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-batch",
-            "org.springframework.boot:spring-boot-starter-data-jdbc")
+            "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-data-jdbc",
+            "org.springframework.boot:spring-boot-starter-validation")
 
     implementation("com.fasterxml.jackson:jackson-bom:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-core",
             "com.fasterxml.jackson.core:jackson-databind",
             "com.fasterxml.jackson.core:jackson-annotations")
+
+    implementation ("io.lettuce:lettuce-core:$lettuceVersion")
+    implementation ("org.apache.commons:commons-pool2:$commonsPool2Version")
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     runtimeOnly "com.mysql:mysql-connector-j:$mysqlVersion"

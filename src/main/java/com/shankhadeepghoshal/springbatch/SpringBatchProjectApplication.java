@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class SpringBatchProjectApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBatchProjectApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(SpringBatchProjectApplication.class, args);
+  }
 }

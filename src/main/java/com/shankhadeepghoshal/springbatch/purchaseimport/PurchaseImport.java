@@ -1,4 +1,4 @@
-package com.shankhadeepghoshal.springbatch.annotations;
+package com.shankhadeepghoshal.springbatch.purchaseimport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,4 +13,4 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-public @interface PersonImport {}
+public @interface PurchaseImport {}

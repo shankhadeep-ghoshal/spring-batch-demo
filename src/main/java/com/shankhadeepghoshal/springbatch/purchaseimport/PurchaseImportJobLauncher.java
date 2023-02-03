@@ -1,6 +1,5 @@
-package com.shankhadeepghoshal.springbatch.launchers;
+package com.shankhadeepghoshal.springbatch.purchaseimport;
 
-import com.shankhadeepghoshal.springbatch.annotations.PersonImport;
 import java.util.concurrent.TimeUnit;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +20,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
-public class PersonImportJobLauncher {
+public class PurchaseImportJobLauncher {
+  JobLauncher launcher;
+  @PurchaseImport Job purchaseImportJob;
 
-    JobLauncher launcher;
-    @PersonImport Job personImportJob;
+  @SneakyThrows
+  @Scheduled(fixedRate = 6L, timeUnit = TimeUnit.DAYS)
+  public void performJob() {
+    final var jobParameters =
+        new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters();
 
-    @SneakyThrows
-    @Scheduled(fixedRate = 5L, timeUnit = TimeUnit.SECONDS)
-    public void performJob() {
-        final var jobParameters =
-                new JobParametersBuilder()
-                        .addLong("time", System.currentTimeMillis())
-                        .toJobParameters();
-
-        log.info("Executing Person Job....");
-        launcher.run(personImportJob, jobParameters);
-    }
+    log.info("Executing Purchase Job....");
+    launcher.run(purchaseImportJob, jobParameters);
+  }
 }
