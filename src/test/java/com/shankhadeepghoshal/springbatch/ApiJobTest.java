@@ -19,17 +19,17 @@ import org.springframework.test.annotation.DirtiesContext;
 @AutoConfigureTestDatabase
 @DirtiesContext
 class ApiJobTest {
-    @Autowired private transient JobLauncherTestUtils jobLauncherTestUtils;
+  @Autowired private transient JobLauncherTestUtils jobLauncherTestUtils;
 
-    @Test
-    void testJob() throws Exception {
-        final var jobExecution = jobLauncherTestUtils.launchJob();
-        final var stepExecution = jobExecution.getStepExecutions().iterator().next();
+  @Test
+  void testJob() throws Exception {
+    final var jobExecution = jobLauncherTestUtils.launchJob();
+    final var stepExecution = jobExecution.getStepExecutions().iterator().next();
 
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus()),
-                () -> Assertions.assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus()),
-                () -> Assertions.assertEquals(10, stepExecution.getReadCount()),
-                () -> Assertions.assertEquals(10, stepExecution.getWriteCount()));
-    }
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus()),
+        () -> Assertions.assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus()),
+        () -> Assertions.assertEquals(10, stepExecution.getReadCount()),
+        () -> Assertions.assertEquals(10, stepExecution.getWriteCount()));
+  }
 }

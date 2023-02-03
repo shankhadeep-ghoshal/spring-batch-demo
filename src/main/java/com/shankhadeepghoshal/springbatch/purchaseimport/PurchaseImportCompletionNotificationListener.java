@@ -1,6 +1,5 @@
-package com.shankhadeepghoshal.springbatch.jobcompletionlisteners;
+package com.shankhadeepghoshal.springbatch.purchaseimport;
 
-import com.shankhadeepghoshal.springbatch.annotations.PurchaseImport;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,21 +20,20 @@ import org.springframework.stereotype.Component;
 @Component
 @PurchaseImport
 public class PurchaseImportCompletionNotificationListener implements JobExecutionListener {
-    public static final String SELECT_QUERY =
-            """
+  public static final String SELECT_QUERY =
+      """
 											SELECT COUNT(*) FROM person_purchase
 							""";
-    JdbcTemplate jdbcTemplate;
+  JdbcTemplate jdbcTemplate;
 
-    @Override
-    public void afterJob(JobExecution jobExecution) {
-        if (BatchStatus.COMPLETED == jobExecution.getStatus()) {
-            log.info("Job Completed. To Verify");
+  @Override
+  public void afterJob(JobExecution jobExecution) {
+    if (BatchStatus.COMPLETED == jobExecution.getStatus()) {
+      log.info("Job Completed. To Verify");
 
-            jdbcTemplate
-                    .query(SELECT_QUERY, (rs, row) -> rs.getInt(1))
-                    .forEach(
-                            count -> log.info("currently {} rows are present in the table", count));
-        }
+      jdbcTemplate
+          .query(SELECT_QUERY, (rs, row) -> rs.getInt(1))
+          .forEach(count -> log.info("currently {} rows are present in the table", count));
     }
+  }
 }

@@ -1,4 +1,4 @@
-package com.shankhadeepghoshal.springbatch.pojos;
+package com.shankhadeepghoshal.springbatch.personimport;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

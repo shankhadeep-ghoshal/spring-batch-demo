@@ -6,31 +6,29 @@ buildscript {
     apply plugin: 'pmd'
 
     pmd {
-        toolVersion = "6.39.0"
+        toolVersion = "6.54.0"
         ignoreFailures = false
         ruleSetFiles = files("${rootDir}/pmd-ruleset.xml")
         ruleSets = []
-        rulesMinimumPriority = 3
+        rulesMinimumPriority = 4
     }
 
     tasks.withType(Pmd).configureEach {
         reports {
-            xml.enabled(false)
+            xml.enabled(true)
             html.enabled(true)
         }
     }
 
     spotless {
         java {
-            importOrder('java', 'javax', 'com.shankhadeepghoshal.springbatch', '')
+            importOrder('java', 'javax', 'jakarta', 'com.shankhadeepghoshal.springbatch', '')
             removeUnusedImports()
             trimTrailingWhitespace()
-            indentWithTabs(1)
             endWithNewline()
-            googleJavaFormat('1.11.0')
-                    .aosp()
+            googleJavaFormat('1.15.0')
                     .reflowLongStrings()
-                    .groupArtifact('com.google.googlejavaformat:google-java-format')
+                    .groupArtifact("com.google.googlejavaformat:google-java-format")
         }
     }
 }
