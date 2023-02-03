@@ -1,5 +1,6 @@
 package com.shankhadeepghoshal.springbatch.processors;
 
+import com.shankhadeepghoshal.springbatch.annotations.PersonImport;
 import com.shankhadeepghoshal.springbatch.pojos.Person;
 import java.util.Optional;
 import lombok.AccessLevel;
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
-public class ApiProcessor implements ItemProcessor<Person, Person> {
+@PersonImport
+public class PersonProcessor implements ItemProcessor<Person, Person> {
     public static final String FIND_IF_PERSON_EXISTS_QUERY =
             """
 												SELECT COUNT(id) FROM person WHERE id = :id

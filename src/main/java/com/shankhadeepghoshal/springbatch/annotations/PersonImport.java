@@ -13,4 +13,4 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-public @interface ApiImport {}
+public @interface PersonImport {}
